@@ -1,5 +1,6 @@
 package com.scalable.assignment;
 
+import java.net.http.HttpClient;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -9,10 +10,12 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.client.RestTemplate;
 
 @RestController
 public class AssignmentController {
@@ -68,9 +71,11 @@ public class AssignmentController {
 		
 	}
 	
-	@PostMapping("/fetch/patientDrugDetails")
-	public void fetchDrug(String patientid) {
+	@GetMapping("/fetch/patientDrugDetails/{id}")
+	public String fetchDrug(@PathVariable String id) {
+		String obj=  new RestTemplate().getForObject("http://localhost:8082/fetch/drugIdDetails/"+id, String.class);
 		
+		return obj;
 	}
 
 }
